@@ -1,32 +1,6 @@
 """
-Module: tools.py
-Overview:
-    This module contains the fundamental Control class and a prototype class
-    for States.  Also contained here are resource loading functions.
-Imports:
-    os
-    pygame as pg
-Classes:
-    Control(object):
-        Methods:
-            __init__(self,caption)
-            setup_states(self,state_dict,start_state)
-            update(self)
-            flip_state(self)
-            event_loop(self)
-            toggle_show_fps(self)
-            main(self)
-    _State(object):
-        Methods:
-            get_event(self,event)
-            startup(self,current_time,persistant)
-            cleanup(self)
-            update(self,surface,keys,current_time)
-Functions:
-    load_all_gfx(directory,colorkey=(255,0,255),accept=(".png",".jpg",".bmp"))
-    load_all_music(directory,accept=(".wav",".mp3",".ogg",".mdi"))
-    load_all_fonts(directory,accept=(".ttf",))
-    load_all_sfx(directory,accept=(".wav",".mp3",".ogg",".mdi"))
+This module contains the fundamental Control class and a prototype class
+for States.  Also contained here are resource loading functions.
 """
 
 import os
@@ -82,14 +56,16 @@ class Control(object):
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.done = True
-            elif event.type in (pg.KEYDOWN,pg.KEYUP):
+            elif event.type == pg.KEYDOWN:
                 self.keys = pg.key.get_pressed()
-                self.toggle_show_fps()
+                self.toggle_show_fps(event.key)
+            elif event.type == pg.KEYUP:
+                self.keys = pg.key.get_pressed()
             self.state.get_event(event)
 
-    def toggle_show_fps(self):
+    def toggle_show_fps(self,key):
         """Press f5 to turn on/off displaying the framerate in the caption."""
-        if self.keys[pg.K_F5]:
+        if key == pg.K_F5:
             self.show_fps = not self.show_fps
             if not self.show_fps:
                 pg.display.set_caption(self.caption)
@@ -102,7 +78,8 @@ class Control(object):
             pg.display.update()
             self.clock.tick(self.fps)
             if self.show_fps:
-                with_fps = "{} - {:.2f} FPS".format(self.caption,self.clock.get_fps())
+                fps = self.clock.get_fps()
+                with_fps = "{} - {:.2f} FPS".format(self.caption,fps)
                 pg.display.set_caption(with_fps)
 
 

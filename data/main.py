@@ -1,19 +1,13 @@
 """
-Module: main.py
-Overview:
-    The main function is defined here. It simply creates an instance of
-    tools.Control and adds the game states to its dictionary using
-    tools.setup_states.  There should be no need (theoretically) to edit
-    the tools.Control class.  All modifications should occur in this module
-    and in the setup module.
-Imports:
-    from . import setup,tools
-    from .states import title
-Functions:
-    main()
+The main function is defined here. It simply creates an instance of
+tools.Control and adds the game states to its dictionary using
+tools.setup_states.  There should be no need (theoretically) to edit
+the tools.Control class.  All modifications should occur in this module
+and in the setup module.
 """
+
 from . import setup,tools
-from .states import title,splash,menu,creds,story,survive,highscore#, game
+from .states import title,splash,menu,creds,story,survive,highscore
 
 def main():
     """Add states to control here."""

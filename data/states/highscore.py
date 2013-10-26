@@ -1,21 +1,25 @@
 import pygame as pg
 from .. import setup,tools
 
+
 class Highscore(tools._State):
     """This State is updated while our game shows the Highscore screen."""
     def __init__(self):
         tools._State.__init__(self)
-        self.title = self.render_font("Fixedsys500c",20,"Highscore Placeholder",(255,255,0))
-        self.title_rect = self.title.get_rect(center=(setup.SCREEN_RECT.centerx,200))
-
-        self.ne_key = self.render_font("Fixedsys500c",20,"[Press Any Key]",(255,255,0))
-        self.ne_key_rect = self.ne_key.get_rect(center=(setup.SCREEN_RECT.centerx,500))
+        self.title = self.render_font("Fixedsys500c",20,
+                                      "Highscore Placeholder",(255,255,0))
+        self.title_rect = self.title.get_rect()
+        self.title_rect.center = (setup.SCREEN_RECT.centerx, 200)
+        self.ne_key = self.render_font("Fixedsys500c",20,
+                                       "[Press Any Key]",(255,255,0))
+        self.ne_key_rect = self.ne_key.get_rect()
+        self.ne_key_rect.center = (setup.SCREEN_RECT.centerx, 500)
         self.blink = False
         self.timer = 0.0
 
     def render_font(self,font,size,msg,color=(255,255,255)):
         """Takes the name of a loaded font, the size, and the color and returns
-       a rendered surface of the msg given."""
+        a rendered surface of the msg given."""
         selected_font = pg.font.Font(setup.FONTS[font],size)
         return selected_font.render(msg,1,color)
 
@@ -24,7 +28,6 @@ class Highscore(tools._State):
         self.current_time = current_time
         surface.fill((0,0,0))
         surface.blit(self.title, self.title_rect)
-
         if self.current_time-self.timer > 1000/5.0:
             self.blink = not self.blink
             self.timer = self.current_time

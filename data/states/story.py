@@ -2,17 +2,19 @@ import pygame as pg
 from .. import setup,tools
 from ..components import sun, sun_objects
 
+
 class Story(tools._State):
     """This State is updated while our game shows the Story screen."""
     def __init__(self):
         tools._State.__init__(self)
         self.sun_obj = sun_objects.SunObjects()
-
         self.title = self.render_font("Fixedsys500c",20,"Story",(255,255,0))
-        self.title_rect = self.title.get_rect(center=(setup.SCREEN_RECT.centerx,200))
-
-        self.ne_key = self.render_font("Fixedsys500c",20,"[Press Any Key]",(255,255,0))
-        self.ne_key_rect = self.ne_key.get_rect(center=(setup.SCREEN_RECT.centerx,500))
+        title_center = (setup.SCREEN_RECT.centerx, 200)
+        self.title_rect = self.title.get_rect(center=title_center)
+        self.ne_key = self.render_font("Fixedsys500c",20,
+                                       "[Press Any Key]",(255,255,0))
+        ne_key_center = (setup.SCREEN_RECT.centerx, 500)
+        self.ne_key_rect = self.ne_key.get_rect(center=ne_key_center)
         self.blink = False
         self.timer = 0.0
 
@@ -38,6 +40,5 @@ class Story(tools._State):
         """Get events from Control.  Currently changes to next state on any key
        press."""
         if event.type == pg.KEYDOWN:
-            #if event.key == pg.K_ESCAPE:
-                self.next = "MENU"
-                self.done = True
+            self.next = "MENU"
+            self.done = True

@@ -1,6 +1,7 @@
 import pygame as pg
 from .. import setup,tools
 
+
 class Credits(tools._State):
     """This State is updated while our game shows the Credit screen."""
     def __init__(self):
@@ -31,7 +32,7 @@ class Credits(tools._State):
 
     def render_font(self,font,size,msg,color=(255,255,255)):
         """Takes the name of a loaded font, the size, and the color and returns
-       a rendered surface of the msg given."""
+        a rendered surface of the msg given."""
         selected_font = pg.font.Font(setup.FONTS[font],size)
         return selected_font.render(msg,1,color)
 
@@ -56,14 +57,14 @@ class Credits(tools._State):
 
     def cleanup(self):
         """Add variables that should persist to the self.persist dictionary.
-       Then reset State.done to False."""
+        Then reset State.done to False."""
         self.render_list()
         self.done = False
         return self.persist
 
     def get_event(self,event):
         """Get events from Control.  Currently changes to next state on any key
-       press."""
+        press."""
         if event.type == pg.KEYDOWN:
             self.next = "MENU"
             self.done = True

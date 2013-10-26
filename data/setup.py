@@ -1,23 +1,5 @@
 """
-Module: setup.py
-Overview:
-    This module initializes the display and creates dictionaries of resources.
-Imports:
-    os
-    pygame as pg
-    from . import tools
-Global Constants:
-    SCREEN_SIZE
-    ORIGINAL_CAPTION
-    SCREEN
-    SCREEN_RECT
-    CELL_SIZE
-    GRID_MARGIN
-    SELECTOR_MARGIN
-    FONTS
-    MUSIC
-    GFX
-    SFX
+This module initializes the display and creates dictionaries of resources.
 """
 
 import os
@@ -29,7 +11,7 @@ SCREEN_SIZE = 800,600
 ORIGINAL_CAPTION = "Botany vs Biomass"
 
 #Initialization
-##os.environ['SDL_VIDEO_CENTERED'] = '1'
+os.environ['SDL_VIDEO_CENTERED'] = '1'
 pg.init()
 pg.display.set_caption(ORIGINAL_CAPTION)
 SCREEN = pg.display.set_mode(SCREEN_SIZE)

@@ -1,22 +1,10 @@
 """
-Module: title.py
-Overview:
-    This is currently a placeholder for the Menu State of the game.
-Imports:
-    pygame as pg
-    from .. import setup,tools
-Classes:
-    Menu(tools._State):
-        Methods:
-            __init__(self)
-            render_font(self,font,size,msg,color=(255,255,255)
-            pre_render_options(self)
-            get_event(self,event)
-            update(self,Surf,keys,current_time)
-            timeout(self)
+This is currently a placeholder for the Menu State of the game.
 """
+
 import pygame as pg
 from .. import setup,tools
+
 
 class Menu(tools._State):
     """The State for the main menu."""
@@ -28,8 +16,10 @@ class Menu(tools._State):
         self.opts = ['Survival Mode','Story Mode',
                      'Highscores','Credits','Quit']
         self.next_list = ["SURVIVE","STORY","HIGHS","CREDS"]
-        self.title = self.render_font("Fixedsys500c",40,"Menu Screen Placeholder",(0,255,255))
-        self.title_rect = self.title.get_rect(center=(setup.SCREEN_RECT.centerx,75))
+        self.title = self.render_font("Fixedsys500c",40,
+                                      "Menu Screen Placeholder",(0,255,255))
+        self.title_rect = self.title.get_rect()
+        self.title_rect.center = (setup.SCREEN_RECT.centerx, 75)
         self.pre_render_options()
 
     def render_font(self,font,size,msg,color=(255,255,255)):
@@ -42,7 +32,6 @@ class Menu(tools._State):
         selected and unselected messages and corresponding rects."""
         font_deselect = pg.font.Font(setup.FONTS["impact"],25)
         font_selected = pg.font.Font(setup.FONTS["impact"],40)
-
         rendered_msg = {"des":[],"sel":[]}
         for option in self.opts:
             d_rend = font_deselect.render(option, 1, (255,255,255))
@@ -71,7 +60,8 @@ class Menu(tools._State):
         surface.fill((50,50,150))
         surface.blit(self.title,self.title_rect)
         for i,opt in enumerate(self.rendered["des"]):
-            opt[1].center = (setup.SCREEN_RECT.centerx,self.from_bottom+i*self.spacer)
+            opt[1].center = (setup.SCREEN_RECT.centerx,
+                             self.from_bottom+i*self.spacer)
             if opt[1].collidepoint(pg.mouse.get_pos()):
                 rend_img,rend_rect = self.rendered["sel"][i]
                 rend_rect.center = opt[1].center

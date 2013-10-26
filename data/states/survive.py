@@ -1,29 +1,5 @@
 """
-Module: survive.py
-Overview:
-    This module contains the survive state.
-Imports:
-    random
-    pygame as pg
-    from .. import setup,tools
-    from ..components import sun_mek,select_mek,plants_mek
-Classes:
-    Survive(tools._State):
-        Methods:
-            __init__(self)
-            startup(self,current_time,persistant)
-            render_font(self,font,size,msg,color=(255,255,255))
-            update(self,surface,keys,current_time)
-            update_cursor(self,surface)
-            get_coordinates(self,mouse)
-            get_position_from_coordinates(self,coords)
-            update_suns(self,surface)
-            update_plants(self,surface)
-            update_energy(self,surface)
-            clicked_sun(self,event)
-            clicked_selector(self,event)
-            add_plant(self,event)
-            get_event(self,event)
+This module contains the survive state.
 """
 
 import random
@@ -38,18 +14,21 @@ class Survive(tools._State):
         tools._State.__init__(self)
         self.background = setup.GFX["survival"]
         self.ready_msg = self.render_font("impact",70,"Get Ready!")
-        self.ready_rect = self.ready_msg.get_rect(center=setup.SCREEN_RECT.center)
-        self.grid_rect = pg.Rect(setup.GRID_MARGIN,(setup.CELL_SIZE[0]*9,
-                                                    setup.CELL_SIZE[1]*5))
+        msg_center = setup.SCREEN_RECT.center
+        self.ready_rect = self.ready_msg.get_rect(center=msg_center)
+        grid_size = (setup.CELL_SIZE[0]*9, setup.CELL_SIZE[1]*5)
+        self.grid_rect = pg.Rect(setup.GRID_MARGIN,grid_size)
 
     def startup(self,current_time,persistant):
-        """Called when this State gains control; preparing the state for play."""
+        """Called when this State gains control; preparing the state for
+        play."""
         tools._State.startup(self,current_time,persistant)
         self.mode = "READY"
         self.energy = 200
         self.energy_rect = pg.Rect(31,49,88,32)
-        self.available_plants = ["SHOOTER","SUNFLOWER","TOMATO"] #Initialized thusly for testing.
-        self.selector = select_mek.Selector(setup.SELECTOR_MARGIN,self.available_plants)
+        self.available_plants = ["SHOOTER","SUNFLOWER","TOMATO"]
+        margin = setup.SELECTOR_MARGIN
+        self.selector = select_mek.Selector(margin,self.available_plants)
         self.suns = []
         self.plants = []
         self.zombies = []
@@ -97,7 +76,8 @@ class Survive(tools._State):
         y = (mouse[1]-setup.GRID_MARGIN[1])//setup.CELL_SIZE[1]
         return x,y
     def get_position_from_coordinates(self,coords):
-        """Return absolute screen location coresponding to passed coordinates."""
+        """Return absolute screen location coresponding to passed
+        coordinates."""
         location = (setup.GRID_MARGIN[0]+setup.CELL_SIZE[0]*coords[0],
                     setup.GRID_MARGIN[1]+setup.CELL_SIZE[1]*coords[1])
         return location
@@ -120,7 +100,8 @@ class Survive(tools._State):
 
     def update_energy(self,surface):
         """Render and blit the energy amount to the screen."""
-        energy_txt = self.render_font("Fixedsys500c",35,str(self.energy),(0,0,0))
+        energy_msg = str(self.energy)
+        energy_txt = self.render_font("Fixedsys500c",35,energy_msg,(0,0,0))
         energy_txt_rect = energy_txt.get_rect(center=self.energy_rect.center)
         surface.blit(energy_txt,energy_txt_rect)
 
@@ -150,7 +131,8 @@ class Survive(tools._State):
             coords = self.get_coordinates(event.pos)
             location = self.get_position_from_coordinates(coords)
             if not any(plant.coordinates==coords for plant in self.plants):
-                self.plants.append(plants_mek.PLANT_DICT[name](coords,location))
+                Plant = plants_mek.PLANT_DICT[name]
+                self.plants.append(Plant(coords,location))
                 self.energy -= self.selector.selected.cost
                 self.selector.selected.deployed()
                 self.selector.selected = None

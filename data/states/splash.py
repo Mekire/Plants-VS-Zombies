@@ -1,21 +1,10 @@
 """
-Module: splash.py
-Overview:
-    The splash screen of the game. The first thing the user sees.
-Imports:
-    pygame as pg
-    from .. import setup,tools
-Classes:
-    Splash(tools._State):
-        Methods:
-            __init__(self)
-            render_font(self,font,size,msg,color=(255,255,255)
-            make_text_list(self,font,size,strings,color,start_y,y_space)
-            update(self,surface,keys,current_time)
-            get_event(self,event)
+The splash screen of the game. The first thing the user sees.
 """
+
 import pygame as pg
 from .. import setup,tools
+
 
 class Splash(tools._State):
     """This State is updated while our game shows the splash screen."""
@@ -23,24 +12,25 @@ class Splash(tools._State):
         tools._State.__init__(self)
         self.next = "TITLE"
         self.timeout = 5
-
         self.cover = pg.Surface((setup.SCREEN_SIZE))
         self.cover.fill(0)
         self.cover_alpha = 256
         self.alpha_step  = 3
-
         self.image = setup.GFX['splash_page_try']
         text = ["Brought to you by","The","python-forum.org","Community"]
-        self.rendered_text = self.make_text_list("Fixedsys500c",50,text,(0,0,0),320,50)
+        self.rendered_text = self.make_text_list("Fixedsys500c",50,text,
+                                                 (0,0,0),320,50)
 
     def make_text_list(self,font,size,strings,color,start_y,y_space):
-        """Takes a list of strings and returns a list of (rendered_surface,rects).
-        The rects are centered on the screen and their y coordinates begin at
-        starty, with y_space pixels between each line."""
+        """Takes a list of strings and returns a list of
+        (rendered_surface, rect) tuples. The rects are centered on the screen
+        and their y coordinates begin at starty, with y_space pixels between
+        each line."""
         rendered_text = []
         for i,string in enumerate(strings):
             msg = self.render_font(font,size,string,color)
-            rect = msg.get_rect(center=(setup.SCREEN_RECT.centerx,start_y+i*y_space))
+            msg_center = (setup.SCREEN_RECT.centerx, start_y+i*y_space)
+            rect = msg.get_rect(center=msg_center)
             rendered_text.append((msg,rect))
         return rendered_text
 
