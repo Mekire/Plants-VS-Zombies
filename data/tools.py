@@ -161,5 +161,5 @@ def load_all_sfx(directory,accept=(".wav",".mp3",".ogg",".mdi")):
     for fx in os.listdir(directory):
         name,ext = os.path.splitext(fx)
         if ext.lower() in accept:
-            effects[name] = pg.mixer.Sound(pg.os.path.join(directory,fx))
+            effects[name] = pg.mixer.Sound(os.path.join(directory,fx))
     return effects
